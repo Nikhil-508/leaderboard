@@ -3,6 +3,8 @@ const {addUser,updateUser, getLeaderBoard, showUserRank} = require('../Controlle
 
 
 
+//user Routes
+
 userRouter.post('/addUser',addUser)
 userRouter.post('/updateUser/:id',updateUser)
 userRouter.get('/leaderboard',getLeaderBoard)

@@ -1,6 +1,9 @@
 const userModel = require('../Model/userSchema')
 
+
+
 // add User functionality
+
 const addUser = async(req,res) => {
     try {
         const {name,score} = req.body
@@ -12,6 +15,9 @@ const addUser = async(req,res) => {
         console.log(error)
     }
 }
+
+
+// update the user details -- name and score 
 
 const updateUser = async (req,res) => {
     try {
@@ -30,6 +36,9 @@ const updateUser = async (req,res) => {
     }
 }
 
+
+//gettign the leaderboard datas in the descending order of score
+
 const getLeaderBoard = async(req,res) => {
     try {
         //getting the data of users include the name and score only
@@ -42,14 +51,17 @@ const getLeaderBoard = async(req,res) => {
     }
 }
 
+
+//showing the user rank according to their Id
+
 const showUserRank = async(req,res) => {
     try {
         const userId = req.params.id
         const users = await userModel.find().sort({score:-1})
         const userRank = users.findIndex(user => user._id.toString() ===userId) + 1
         const user = await userModel.findById(userId)
-        console.log(userId,userRank,"haii");
         if(user && userRank){
+            //sending all details of user also showing the rank
             return res.json({
                 name : user.name,
                 score : user.score,
@@ -58,13 +70,14 @@ const showUserRank = async(req,res) => {
         }else{
             res.status(404).json({message:"user not found"})
         }
-        
     } catch (error) {
         res.status(500).json({message:error.message})
         console.log(error);
-        
     }
 }
+
+
+
 
 module.exports = {
     addUser,

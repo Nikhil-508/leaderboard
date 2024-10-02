@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 
+
+//creating usre schema with name and score fields
+
 const userSchema = new mongoose.Schema(
     {
         name:{
