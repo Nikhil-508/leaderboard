@@ -1,6 +1,6 @@
 const userModel = require('../Model/userSchema')
 
-
+// add User functionality
 const addUser = async(req,res) => {
     try {
         const {name,score} = req.body
@@ -32,20 +32,36 @@ const updateUser = async (req,res) => {
 
 const getLeaderBoard = async(req,res) => {
     try {
-        const userData = await userModel.find().sort({score:1})
-        res.json(userData.name)
+        //getting the data of users include the name and score only
+        const userData = await userModel.find().sort({score:-1}).select('name score -_id');
+        res.json(userData)
     } catch (error) {
         res.status(400)
         res.json({erroe:error.message})
         console.log(error);
-        
     }
 }
 
 const showUserRank = async(req,res) => {
     try {
+        const userId = req.params.id
+        const users = await userModel.find().sort({score:-1})
+        const userRank = users.findIndex(user => user._id.toString() ===userId) + 1
+        const user = await userModel.findById(userId)
+        console.log(userId,userRank,"haii");
+        if(user && userRank){
+            return res.json({
+                name : user.name,
+                score : user.score,
+                rank : userRank
+            })
+        }else{
+            res.status(404).json({message:"user not found"})
+        }
         
     } catch (error) {
+        res.status(500).json({message:error.message})
+        console.log(error);
         
     }
 }
